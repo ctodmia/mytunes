@@ -16,19 +16,36 @@ var SongQueue = Songs.extend({
       this.ended();
     }
   });
+    this.on('dequeue', function(song){
+      this.remove(song);
+  });
+    // this.on('playFirst', function(song){
+    //   this.play(song);
+    // })
   },
 
   playFirst: function(){
     // console.log('ended', this)
+
+    this.at(0).play();
   },
-
-
-
+// 
   ended: function(){
     this.shift();
+    
     // this.on('ended', function(){
       // this.splice(0,1);
-      console.log('SongQueue');
     // })
-  }
+  },
+  // play: function(){
+
+  // }
 });
+
+//brb, need to move car 
+//dequeue is an event, 
+//.remove is existing method
+
+//this.on("dequeue", function(song){
+//   this.remove(song);
+// });
