@@ -2,52 +2,85 @@
 var SongQueue = Songs.extend({
 
   initialize: function(){
-    this.on('add', function(){
-      this.add('songData');
-      console.log('addedsonqueue');
-      if(this.length === 1){
-        this.playFirst();
-      }
-    })
+    this.on( 'add', this.enqueue, this );
+    this.on( 'dequeue', this.dequeue, this );
+    this.on( 'ended', this.playNext, this );
+  },
 
-    this.on('ended', function(){
-    if(this.length > 1){
-      this.ended();
+enqueue: function(song){
+    if( this.length === 1 ){
       this.playFirst();
-    }else{
-      this.ended();
     }
-  });
-    this.on('dequeue', function(song){
+  },
+
+  dequeue: function(song){
+    if( this.at(0) === song ){
+      this.playNext();
+    } else {
       this.remove(song);
-  });
-    // this.on('playFirst', function(song){
-    //   this.play(song);
-    // })
+    }
+  },
+
+  playNext: function(){
+    this.shift();
+    if( this.length >= 1 ){
+      this.playFirst();
+    } else {
+      this.trigger('stop');
+    }
   },
 
   playFirst: function(){
-    // console.log('ended', this)
-
     this.at(0).play();
-  },
-// 
-  ended: function(){
-    this.shift();
-    
-    // this.on('ended', function(){
-      // this.splice(0,1);
-    // })
-  },
-  // play: function(){
-
-  // }
+  }
+  
 });
 
-//brb, need to move car 
-//dequeue is an event, 
-//.remove is existing method
 
-//this.on("dequeue", function(song){
-//   this.remove(song);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+    // this.on('enqueue')
+
+//     this.on('ended', function(){
+//     if(this.length === 1){
+//       this.playFirst();
+//     }
+//   };
+//     this.on('dequeue', function(song){
+//       this.remove(song);
+//   };
+//     // this.on('playFirst', function(song){
+//     //   this.play(song);
+//     // })
+//   },
+
+//   playFirst: function(){
+//     // console.log('ended', this)
+
+//     this.at(0).play();
+//   },
+// // 
+//   ended: function(){
+//     this.shift();
+    
+//     // this.on('ended', function(){
+//       // this.splice(0,1);
+//     // })
+//   },
+//   // play: function(){
+
+//   // }
 // });
